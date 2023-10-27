@@ -1,14 +1,12 @@
-import com.github.spotbugs.snom.SpotBugsTask
 import java.text.SimpleDateFormat
 
 plugins {
-    id 'checkstyle'
-    id "com.github.spotbugs" version "5.2.1"
+    id 'eclipse'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
 }
 
-group = "com.crimsonwarpedcraft.exampleplugin"
+group = "org.naumov.mypaperplugin"
 
 static def getTime() {
     SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd-HHmm")
@@ -51,51 +49,27 @@ repositories {
             includeModule("net.md-5", "bungeecord-chat")
         }
     }
+    maven {
+    	name 'codemc'
+    	url 'https://repo.codemc.io/repository/maven-public/'
+    	content {
+    		includeModule("de.tr7zw", "item-nbt-parent")
+    		includeModule("de.tr7zw", "item-nbt-api")
+    	}
+    }
 
     mavenCentral()
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT'
-    compileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.0'
+    compileOnly 'io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT'
+    implementation 'de.tr7zw:item-nbt-api:2.12.0'
     implementation 'io.papermc:paperlib:1.0.8'
-    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.12.0'
-    testCompileOnly 'com.github.spotbugs:spotbugs-annotations:4.8.0'
-    testImplementation 'io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
-}
-
-test {
-    useJUnitPlatform()
 }
 
 processResources {
     filesMatching("**/plugin.yml") {
         expand ( NAME: rootProject.name, VERSION: version, PACKAGE: project.group.toString() )
-    }
-}
-
-checkstyle {
-    toolVersion '10.12.4'
-    maxWarnings = 0
-}
-
-tasks.withType(Checkstyle).configureEach {
-    reports {
-        xml.required = false
-        html.required = true
-    }
-}
-
-tasks.withType(SpotBugsTask).configureEach {
-    reports {
-        xml {
-            required.set(false)
-        }
-        html {
-            required.set(true)
-        }
     }
 }
 

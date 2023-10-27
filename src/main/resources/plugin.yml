@@ -2,19 +2,13 @@ main: ${PACKAGE}.${NAME}
 name: ${NAME}
 version: "${VERSION}"
 api-version: "1.16"
-author: AUTHOR
-description: DESCRIPTION
+author: "Dmitriy Naumov"
+description: "All in one, all in one..."
 commands:
-  ex:
-    description: Base command for EXAMPLE
-    usage: "For a list of commands, type /ex help"
-    aliases: example
+  dpstats:
+    description: "View own stats"
+    usage: "/dpstats"
 permissions:
-  example.test:
-    description: DESCRIPTION
+  dpstats:
+    description: "Permission to use /dpstats command"
     default: true
-  example.*:
-    description: Grants all other permissions
-    default: false
-    children:
-      example.test: true
