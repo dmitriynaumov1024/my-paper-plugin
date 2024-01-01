@@ -5,10 +5,41 @@ api-version: "1.16"
 author: "Dmitriy Naumov"
 description: "All in one, all in one..."
 commands:
-  dpstats:
+  stats:
     description: "View own stats"
-    usage: "/dpstats"
+    usage: "/stats"
+  book:
+    description: "Various manipulations with enchanted books"
+    usage: "/book <dupe|upgrade>"
+  gamble:
+    description: "Babe, just one more command, just one more feature..."
+    usage: "/gamble"
+  kit:
+    description: "Babe, just one more command, just one more feature..."
+    usage: "/kit"
+  tpa:
+    description: "Teleport to other players"
+    usage: "/tpa [player name]"
+  donate:
+    description: "Get info about how to donate"
+    usage: "/donate"
 permissions:
-  dpstats:
-    description: "Permission to use /dpstats command"
+  stats:
+    description: "Permission to use /stats command"
     default: true
+  book:
+    description: "Permission to use /book command"
+    default: true
+  gamble:
+    description: "Permission to use /gamble command"
+    default: true
+  kit:
+    description: "Permission to use /kit command"
+    default: true
+  tpa:
+    description: "Permission to use /tpa command"
+    default: true
+  donate: 
+    description: "Permission to use /donate command"
+    default: true  
+  

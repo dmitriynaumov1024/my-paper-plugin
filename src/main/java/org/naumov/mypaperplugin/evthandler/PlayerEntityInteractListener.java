@@ -47,7 +47,9 @@ public class PlayerEntityInteractListener implements Listener
 					Component.text("[i] Stored enchantments:").color(TextColor.color(0x00f0ff)), 
 					Component.text(String.join("\n", textLines))));
 			
-			switch(Enchanter.tryCopyEnchant(item, hand, p)) {
+			EnchantResult enchResult = Enchanter.tryCopyEnchant(item, hand, p);
+			
+			switch(enchResult) {
 			case SUCCESS:
 				p.sendMessage(Component.text("[+] Successfully enchanted item in your hand!")
 									   .color(TextColor.color(0x07ff00)));

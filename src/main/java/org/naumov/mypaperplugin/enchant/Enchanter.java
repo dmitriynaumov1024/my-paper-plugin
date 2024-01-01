@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 import de.tr7zw.changeme.nbtapi.*;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
+import net.kyori.adventure.text.Component;
 
 public class Enchanter 
 {
@@ -58,7 +59,7 @@ public class Enchanter
 	public static EnchantResult tryCopyEnchant (ItemStack source, ItemStack target, Player targetOwner)
 	{
 		if (! isEnchantTarget(target)) return EnchantResult.TARGET_NOT_SUPPORTED;
-		if (hasEnchantments(target)) return EnchantResult.TARGET_ALREADY_ENCHANTED;
+		// if (hasEnchantments(target)) return EnchantResult.TARGET_ALREADY_ENCHANTED;
 		if (! isEnchantReady(target)) return EnchantResult.TARGET_NOT_READY;
 		
 		String sourceId = getId(source),
@@ -74,10 +75,22 @@ public class Enchanter
 		int enchCost = getEnchantmentCost(sourceEnch);
 		if (enchCost >= targetOwner.getLevel()) return EnchantResult.TOO_EXPENSIVE;
 		
-		ntarget.getOrCreateCompound("Enchantments");
+		if (ntarget.getCompoundList("Enchantments") == null) ntarget.addCompound("Enchantments");
 		NBTCompoundList targetEnch = ntarget.getCompoundList("Enchantments");
-		for (ReadWriteNBT ench : sourceEnch) {
-			targetEnch.addCompound(ench);
+		for (ReadWriteNBT sench : sourceEnch) {
+			boolean match = false;
+			for (ReadWriteNBT tench : targetEnch) {
+				if (sench.getString("id").equals(tench.getString("id"))) {
+					tench.setInteger("lvl", Math.max(sench.getInteger("lvl"), tench.getInteger("lvl")));
+					match = true;
+					targetOwner.sendMessage(Component.text("Update ench. "+ sench.getString("id")));
+					break;
+				}
+			}
+			if (!match) {
+				targetEnch.addCompound(sench);
+				targetOwner.sendMessage(Component.text("Create ench. "+ sench.getString("id")));
+			}
 		}
 		ntarget.removeKey("EnchantmentCopierReady");
 		ntarget.applyNBT(target);
