@@ -20,4 +20,12 @@ public class KitStart extends Kit
 	protected Prize[] getPrizes() {
 		return items;
 	}
+	
+	public long getCooldown() {
+		return 7200; // 2 hours
+	}
+	
+	public String getName() {
+		return "Start";
+	}
 }

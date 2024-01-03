@@ -1,7 +1,6 @@
 package org.naumov.mypaperplugin.comhandler;
 
 import org.bukkit.Server;
-import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

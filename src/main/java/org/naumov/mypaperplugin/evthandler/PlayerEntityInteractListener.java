@@ -1,12 +1,6 @@
 package org.naumov.mypaperplugin.evthandler;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.bukkit.Material;
 import org.bukkit.Server;
-import org.bukkit.Statistic;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.player.*;
@@ -35,6 +29,7 @@ public class PlayerEntityInteractListener implements Listener
 		
 		if (event.getRightClicked() instanceof ItemFrame itframe) {
 			ItemStack item = itframe.getItem();
+			if (item == null || item.isEmpty()) return;
 			ItemStack hand = p.getInventory().getItemInMainHand();
 			
 			NBTItem nitem = new NBTItem(item);

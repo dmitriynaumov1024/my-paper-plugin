@@ -15,11 +15,32 @@ commands:
     description: "Babe, just one more command, just one more feature..."
     usage: "/gamble"
   kit:
-    description: "Babe, just one more command, just one more feature..."
-    usage: "/kit"
+    description: "Kits are a toolset for getting up from the bottom"
+    usage: "/kit [kit name]"
+  kits:
+    description: "Get list of known kit names"
+    usage: "/kits"
   tpa:
     description: "Teleport to other players"
-    usage: "/tpa [player name]"
+    usage: "/tpa <player name>"
+  back:
+    description: "Go to previous location before teleporting. Not counting teleportations to spawn point after death."
+    usage: "/back"
+  death:
+    description: "Go to last death location"
+    usage: "/death"
+  sethome:
+    description: "Create new home"
+    usage: "/sethome <home name>"
+  unsethome:
+    description: "Remove existing home"
+    usage: "/unsethome <home name>"
+  home:
+    description: "Teleport to home"
+    usage: "/home <home name>"
+  homes:
+    description: "Get list of homes"
+    usage: "/homes"
   donate:
     description: "Get info about how to donate"
     usage: "/donate"
@@ -36,10 +57,30 @@ permissions:
   kit:
     description: "Permission to use /kit command"
     default: true
+  kits:
+    description: "Permission to use /kit command"
+    default: true
   tpa:
     description: "Permission to use /tpa command"
+    default: true
+  back:
+    description: "Permission to use /back command"
+    default: true
+  death:
+    description: "Permission to use /death command"
+    default: true
+  sethome:
+    description: "Permission to use /sethome command"
+    default: true
+  unsethome:
+    description: "Permission to use /unsethome command"
+    default: true
+  home:
+    description: "Permission to use /home command"
+    default: true
+  homes:
+    description: "Permission to use /homes command"
     default: true
   donate: 
     description: "Permission to use /donate command"
     default: true  
-  

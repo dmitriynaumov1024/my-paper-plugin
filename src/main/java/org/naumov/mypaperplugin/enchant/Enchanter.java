@@ -111,19 +111,19 @@ public class Enchanter
 	
 	public static boolean isWeaponId (String id)
 	{
-		return id.endsWith("_sword") || id.endsWith("trident") || id.endsWith("bow") || id.endsWith("crossbow");
+		return id.endsWith("_sword") || id.endsWith("trident") || id.endsWith("bow") || id.endsWith("crossbow") || id.endsWith("_axe");
 	}
 	
 	public static boolean isArmorId (String id)
 	{
-		return id.endsWith("_chestplate") || id.endsWith("_leggings") || id.endsWith("_boots") || id.endsWith("_helmet");
+		return id.endsWith("_chestplate") || id.endsWith("_leggings") || id.endsWith("_boots") || id.endsWith("_helmet") || id.endsWith("shield");
 	}
 	
 	public static boolean isEqualCategoryId (String id1, String id2)
 	{
-		return isToolId(id1) == isToolId(id2) 
-			&& isWeaponId(id1) == isWeaponId(id2)
-			&& isArmorId(id1) == isArmorId(id2);
+		return isToolId(id1) && isToolId(id2) 
+			|| isWeaponId(id1) && isWeaponId(id2)
+			|| isArmorId(id1) && isArmorId(id2);
 	}
 	
 	public static boolean isBook (ItemStack item)

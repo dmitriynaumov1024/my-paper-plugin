@@ -3,22 +3,24 @@ package org.naumov.mypaperplugin.comhandler;
 import org.bukkit.Server;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.naumov.mypaperplugin.home.Home;
 import org.naumov.mypaperplugin.tpa.Teleport;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 
-public class TpaCommandHandler implements CommandExecutor 
-{	
+public class UnsethomeCommandHandler implements CommandExecutor
+{
+	final TextColor red = TextColor.color(0xfe3333);
 	final TextColor yellow = TextColor.color(0xfec922);
 	
 	private Server server;
-	private Teleport teleport;
+	private Home home;
 	
-	public TpaCommandHandler (Server server)
+	public UnsethomeCommandHandler (Server server)
 	{
 		this.server = server;
-		this.teleport = new Teleport(server);
+		this.home = new Home(server, new Teleport(server));
 	}
 	
 	public boolean onCommand (CommandSender sender, Command command, String label, String[] args)
@@ -30,14 +32,13 @@ public class TpaCommandHandler implements CommandExecutor
 			return false;
 		}
 		
-		Player target = this.server.getPlayer(args[0]);
-		if (target != null) {
-			this.teleport.tp(player, target.getLocation());
-			player.sendMessage(Component.text("Teleported to " + target.getName() + ".").color(yellow));
-			target.sendMessage(Component.text(player.getName() + " teleported to you.").color(yellow));
+		String homeName = args[0].toLowerCase();
+		
+		if (this.home.unsetHome(player, homeName)) {
+			player.sendMessage(Component.text("Home " + homeName + " was deleted even if it did not exist.").color(yellow));
 		}
 		else {
-			player.sendMessage(Component.text("Player not found."));
+			player.sendMessage(Component.text("Sorry, you can not delete home most likely because of internal error.").color(red));
 		}
 		
 		return true;
