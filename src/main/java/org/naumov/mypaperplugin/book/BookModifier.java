@@ -98,13 +98,13 @@ public class BookModifier
 	
 	public static int getEnchantmentCost (NBTCompoundList enchantments, BookModifyAction action)
 	{
-		int result = 0;
+		int result = (action == BookModifyAction.DISENCHANT) ? 0 : 1;
 		for (ReadWriteNBT kv : enchantments) {
 			int lvl = kv.getInteger("lvl");
 			double pow = (action == BookModifyAction.UPGRADE) ? 2.5 : 
 					     (action == BookModifyAction.DUPE) ? 1.5 :
 					     (action == BookModifyAction.DISENCHANT) ? 1 : 0;
-			result += (int)(Math.pow(lvl, pow) + 1);
+			result += (int)Math.pow(lvl, pow);
 		}
 		return result;
 	}

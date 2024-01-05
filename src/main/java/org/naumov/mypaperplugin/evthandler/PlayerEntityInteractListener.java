@@ -15,6 +15,10 @@ import de.tr7zw.changeme.nbtapi.*;
 
 public class PlayerEntityInteractListener implements Listener
 {
+	final TextColor red = TextColor.color(0xfe3333);
+	final TextColor yellow = TextColor.color(0xfec922);
+	final TextColor green = TextColor.color(0x33fe35);
+	
 	private Server server;
 	
 	public PlayerEntityInteractListener(Server server)
@@ -46,32 +50,26 @@ public class PlayerEntityInteractListener implements Listener
 			
 			switch(enchResult) {
 			case SUCCESS:
-				p.sendMessage(Component.text("[+] Successfully enchanted item in your hand!")
-									   .color(TextColor.color(0x07ff00)));
+				p.sendMessage(Component.text("[+] Successfully enchanted item in your hand!").color(green));
 				break;
 			case SOURCE_TARGET_MISMATCH:
-				p.sendMessage(Component.text("[x] Target item can not be enchanted with this provider.")
-									   .color(TextColor.color(0xf05555)));
+				p.sendMessage(Component.text("[x] Target item can not be enchanted with this provider.").color(red));
 				break;
 			case TARGET_ALREADY_ENCHANTED:
-				p.sendMessage(Component.text("[x] Target is already enchanted. Disenchant it and try again.")
-						   .color(TextColor.color(0xf05555)));
+				p.sendMessage(Component.text("[x] Target is already enchanted. Disenchant it and try again.").color(yellow));
 				break;
 			case TARGET_NOT_READY:
 				Enchanter.trySetEnchantReady(hand);
 				p.sendMessage(Component.text("Interact with this item frame again to confirm enchant."));
 				break;
 			case TARGET_NOT_SUPPORTED:
-				p.sendMessage(Component.text("[x] Target is not supported.")
-						   .color(TextColor.color(0xf05555)));
+				p.sendMessage(Component.text("[x] Target is not supported.").color(yellow));
 				break;
 			case TOO_EXPENSIVE:
-				p.sendMessage(Component.text("[x] Too expensive. Get more XP levels and try again.")
-						   .color(TextColor.color(0xf05555)));
+				p.sendMessage(Component.text("[x] Too expensive. Get more XP levels and try again.").color(yellow));
 				break;
 			default:
-				p.sendMessage(Component.text("[?] Default switch statement. You should not have seen this! -_-")
-						   .color(TextColor.color(0xf05555)));
+				p.sendMessage(Component.text("[?] Default switch statement. You should not have seen this! -_-").color(red));
 				break;
 			}
 			

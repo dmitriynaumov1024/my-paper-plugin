@@ -42,7 +42,8 @@ public class Enchanter
 	{
 		int result = 0;
 		for (ReadWriteNBT kv : enchantments) {
-			result += kv.getInteger("lvl");
+			if (kv.getString("id").contains("mending")) result += 3;
+			else result += kv.getInteger("lvl");
 		}
 		return result;
 	}
@@ -81,9 +82,16 @@ public class Enchanter
 			boolean match = false;
 			for (ReadWriteNBT tench : targetEnch) {
 				if (sench.getString("id").equals(tench.getString("id"))) {
-					tench.setInteger("lvl", Math.max(sench.getInteger("lvl"), tench.getInteger("lvl")));
+					int srcLevel = sench.getInteger("lvl"), targetLevel = tench.getInteger("lvl");
+					if (srcLevel > targetLevel) {
+						tench.setInteger("lvl", srcLevel);
+						enchCost -= srcLevel - targetLevel;
+						targetOwner.sendMessage(Component.text("Upgrade ench. "+ sench.getString("id")));
+					}
+					else {
+						enchCost -= srcLevel;
+					}
 					match = true;
-					targetOwner.sendMessage(Component.text("Update ench. "+ sench.getString("id")));
 					break;
 				}
 			}
