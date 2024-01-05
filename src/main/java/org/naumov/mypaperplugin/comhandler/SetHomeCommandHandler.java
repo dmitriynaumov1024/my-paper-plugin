@@ -9,14 +9,14 @@ import org.naumov.mypaperplugin.tpa.Teleport;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 
-public class SethomeCommandHandler implements CommandExecutor
+public class SetHomeCommandHandler implements CommandExecutor
 {
 	final TextColor red = TextColor.color(0xfe3333);
 	
 	private Server server;
 	private Home home;
 	
-	public SethomeCommandHandler (Server server)
+	public SetHomeCommandHandler (Server server)
 	{
 		this.server = server;
 		this.home = new Home(server, new Teleport(server));

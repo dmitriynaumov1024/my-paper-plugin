@@ -3,6 +3,7 @@ package org.naumov.mypaperplugin.comhandler;
 import org.bukkit.Server;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.naumov.mypaperplugin.pstatus.PlayerStatusRepo;
 import org.naumov.mypaperplugin.tpa.Teleport;
 
 import net.kyori.adventure.text.Component;
@@ -31,15 +32,18 @@ public class TpaCommandHandler implements CommandExecutor
 		}
 		
 		Player target = this.server.getPlayer(args[0]);
-		if (target != null) {
-			this.teleport.tp(player, target.getLocation());
-			player.sendMessage(Component.text("Teleported to " + target.getName() + ".").color(yellow));
-			target.sendMessage(Component.text(player.getName() + " teleported to you.").color(yellow));
+		if (target == null) {
+			player.sendMessage(Component.text("Player not found.").color(yellow));
+			return true;
 		}
-		else {
-			player.sendMessage(Component.text("Player not found."));
+		if (PlayerStatusRepo.getBusy(target)) {
+			player.sendMessage(Component.text("Player " + args[0] + " is busy now. Can not teleport.").color(yellow));
+			return true;
 		}
 		
+		this.teleport.tp(player, target.getLocation());
+		player.sendMessage(Component.text("Teleported to " + target.getName() + ".").color(yellow));
+		target.sendMessage(Component.text(player.getName() + " teleported to you.").color(yellow));
 		return true;
 	}
 }

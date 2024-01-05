@@ -1,41 +1,38 @@
 package org.naumov.mypaperplugin.evthandler;
 
-import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.*;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
 
 import net.kyori.adventure.text.Component;
 
-import org.naumov.mypaperplugin.kit.*;
+import org.naumov.mypaperplugin.player.PlayerIdRepo;
 
 public class PlayerJoinListener implements Listener 
 {
-	private Server server;	
-	private Kit kitStart;
+	private Server server;
 	
 	public PlayerJoinListener(Server server)
 	{
 		this.server = server;
-		this.kitStart = new KitStart();
 	}
 	
     @EventHandler
     public void onPlayerJoin (PlayerJoinEvent event)
     {
-    	Player p = event.getPlayer();
+    	Player player = event.getPlayer();
+    	PlayerIdRepo.putPlayer(player);
     	
-    	if (p.getStatistic(Statistic.PLAY_ONE_MINUTE) < 5) { 
+    	if (player.getStatistic(Statistic.PLAY_ONE_MINUTE) < 5) { 
     		// means player is new
-	    	this.server.sendMessage(Component.text("Welcome " + p.getName() + "!"));
-	    	p.sendMessage(Component.text("To get started, use command /kit start"));
+	    	this.server.sendMessage(Component.text("Welcome " + player.getName() + "!"));
+	    	player.sendMessage(Component.text("To get started, use command /kit start"));
     	}
     	else {
-    		p.sendMessage(Component.text("Welcome back " + p.getName() + "!"));
-    		p.sendMessage(Component.text("If you like this server, consider donating. \nEvery cent is important to us. [/donate]"));
+    		player.sendMessage(Component.text("Welcome back " + player.getName() + "!"));
+    		player.sendMessage(Component.text("If you like this server, consider donating. \nEvery cent is important to us. [/donate]"));
     	}
     }
 }

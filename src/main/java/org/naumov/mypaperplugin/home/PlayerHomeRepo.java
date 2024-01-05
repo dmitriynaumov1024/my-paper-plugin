@@ -14,7 +14,7 @@ public class PlayerHomeRepo
 	private static Connection getAndPrepareDb() {
 		try {
 			Connection con = DbConnection.instance();
-			con.prepareStatement(
+			String createTablePlayerHome = 
 				"create table if not exists player_home (" +
 				"player_id varchar(44)," +
 				"home_name varchar(128)," +
@@ -23,7 +23,16 @@ public class PlayerHomeRepo
 				"y double," +
 				"z double," +
 				"primary key(player_id, home_name)" +
-				");").execute();
+				");";
+			String createTablePlayerHomeShare = 
+				"create table if not exists player_home_share (" +
+				"owner_id varchar(44)," +
+				"home_name varchar(128)," + 
+				"shared_with varchar(44)," +
+				"primary key(owner_id, home_name, shared_with)" +
+				");";
+			con.prepareStatement(createTablePlayerHome).execute();
+			con.prepareStatement(createTablePlayerHomeShare).execute();
 			return con;
 		} 
 		catch (Exception ex) {
@@ -104,7 +113,12 @@ public class PlayerHomeRepo
 	
 	public static boolean deleteHome (Player player, String homeName, Server server) {
 		try {
-			PreparedStatement stmt = dbcon.prepareStatement("delete from player_home where player_id=? and home_name=?;");
+			PreparedStatement stmt;
+			stmt = dbcon.prepareStatement("delete from player_home where player_id=? and home_name=?;");
+			stmt.setString(1, player.getUniqueId().toString());
+			stmt.setString(2, homeName);
+			stmt.execute();
+			stmt = dbcon.prepareStatement("delete from player_home_share where owner_id=? and home_name=?;");
 			stmt.setString(1, player.getUniqueId().toString());
 			stmt.setString(2, homeName);
 			stmt.execute();
@@ -116,4 +130,142 @@ public class PlayerHomeRepo
 		}
 	}
 	
+	public static boolean getHomeShare (Player owner, Player peer, String homeName) {
+		if (owner.getUniqueId().equals(peer.getUniqueId())) {
+			return true;
+		}
+		try {
+			PreparedStatement stmt;
+			stmt = dbcon.prepareStatement("select 1 from player_home_share where owner_id=? and home_name=? and (shared_with=? or shared_with=?);");
+			stmt.setString(1, owner.getUniqueId().toString());
+			stmt.setString(2, homeName);
+			stmt.setString(3, peer.getUniqueId().toString());
+			stmt.setString(4, "*");
+			ResultSet r = stmt.executeQuery();
+			return r.next();
+		}
+		catch (Exception ex) {
+			System.out.println("Something went wrong when getting home share");
+			return false;
+		}
+	}
+	
+	public static boolean getHomeShareStrict (Player owner, Player peer, String homeName) {
+		if (owner.getUniqueId().equals(peer.getUniqueId())) {
+			return true;
+		}
+		try {
+			PreparedStatement stmt;
+			stmt = dbcon.prepareStatement("select 1 from player_home_share where owner_id=? and home_name=? and shared_with=?;");
+			stmt.setString(1, owner.getUniqueId().toString());
+			stmt.setString(2, homeName);
+			stmt.setString(3, peer.getUniqueId().toString());
+			ResultSet r = stmt.executeQuery();
+			return r.next();
+		}
+		catch (Exception ex) {
+			System.out.println("Something went wrong when getting home share");
+			return false;
+		}
+	}
+	
+	public static boolean getHomeShareAll (Player owner, String homeName) {
+		try {
+			PreparedStatement stmt;
+			stmt = dbcon.prepareStatement("select 1 from player_home_share where owner_id=? and home_name=? and shared_with=?;");
+			stmt.setString(1, owner.getUniqueId().toString());
+			stmt.setString(2, homeName);
+			stmt.setString(3, "*");
+			ResultSet r = stmt.executeQuery();
+			return r.next();
+		}
+		catch (Exception ex) {
+			System.out.println("Something went wrong when getting home share");
+			return false;
+		}
+	}
+	
+	public static boolean insertHomeShare (Player owner, Player peer, String homeName) {
+		try {
+			PreparedStatement stmt;
+			stmt = dbcon.prepareStatement("insert into player_home_share (owner_id, shared_with, home_name) values (?, ?, ?);");
+			stmt.setString(1, owner.getUniqueId().toString());
+			stmt.setString(2, peer.getUniqueId().toString());
+			stmt.setString(3, homeName);
+			stmt.execute();
+			stmt.close();
+			return true;
+		}
+		catch (Exception ex) {
+			System.out.println("Something went wrong when inserting home share");
+			return false;
+		}
+	}
+	
+	public static boolean insertHomeShareAll (Player owner, String homeName) {
+		try {
+			PreparedStatement stmt;
+			stmt = dbcon.prepareStatement("insert into player_home_share (owner_id, shared_with, home_name) values (?, ?, ?);");
+			stmt.setString(1, owner.getUniqueId().toString());
+			stmt.setString(2, "*");
+			stmt.setString(3, homeName);
+			stmt.execute();
+			stmt.close();
+			return true;
+		}
+		catch (Exception ex) {
+			System.out.println("Something went wrong when inserting home share");
+			return false;
+		}
+	}
+	
+	public static boolean deleteHomeShare (Player owner, Player peer, String homeName) {
+		try {
+			PreparedStatement stmt;
+			stmt = dbcon.prepareStatement("delete from player_home_share where owner_id=? and shared_with=? and home_name=?;");
+			stmt.setString(1, owner.getUniqueId().toString());
+			stmt.setString(2, peer.getUniqueId().toString());
+			stmt.setString(3, homeName);
+			stmt.execute();
+			stmt.close();
+			return true;
+		}
+		catch (Exception ex) {
+			System.out.println("Something went wrong when deleting home share");
+			return false;
+		}
+	}
+	
+	public static boolean deleteHomeShareAll (Player owner, String homeName) {
+		try {
+			PreparedStatement stmt;
+			stmt = dbcon.prepareStatement("delete from player_home_share where owner_id=? and shared_with=? and home_name=?;");
+			stmt.setString(1, owner.getUniqueId().toString());
+			stmt.setString(2, "*");
+			stmt.setString(3, homeName);
+			stmt.execute();
+			stmt.close();
+			return true;
+		}
+		catch (Exception ex) {
+			System.out.println("Something went wrong when deleting home share");
+			return false;
+		}
+	}
+	
+	public static boolean deleteHomeShareAtAll (Player owner, String homeName) {
+		try {
+			PreparedStatement stmt;
+			stmt = dbcon.prepareStatement("delete from player_home_share where owner_id=? and home_name=?;");
+			stmt.setString(1, owner.getUniqueId().toString());
+			stmt.setString(2, homeName);
+			stmt.execute();
+			stmt.close();
+			return true;
+		}
+		catch (Exception ex) {
+			System.out.println("Something went wrong when deleting home share");
+			return false;
+		}
+	}
 }

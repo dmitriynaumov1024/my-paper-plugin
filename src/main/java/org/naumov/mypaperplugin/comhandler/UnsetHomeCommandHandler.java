@@ -9,7 +9,7 @@ import org.naumov.mypaperplugin.tpa.Teleport;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 
-public class UnsethomeCommandHandler implements CommandExecutor
+public class UnsetHomeCommandHandler implements CommandExecutor
 {
 	final TextColor red = TextColor.color(0xfe3333);
 	final TextColor yellow = TextColor.color(0xfec922);
@@ -17,7 +17,7 @@ public class UnsethomeCommandHandler implements CommandExecutor
 	private Server server;
 	private Home home;
 	
-	public UnsethomeCommandHandler (Server server)
+	public UnsetHomeCommandHandler (Server server)
 	{
 		this.server = server;
 		this.home = new Home(server, new Teleport(server));

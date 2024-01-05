@@ -45,8 +45,13 @@ public class MyPaperPlugin extends JavaPlugin
 	private DeathCommandHandler deathHandler;
 	private HomesCommandHandler homesHandler;
 	private HomeCommandHandler homeHandler;
-	private SethomeCommandHandler sethomeHandler;
-	private UnsethomeCommandHandler unsethomeHandler;
+	private SetHomeCommandHandler sethomeHandler;
+	private UnsetHomeCommandHandler unsethomeHandler;
+	private HomeInfoCommandHandler homeinfoHandler;
+	private ShareHomeCommandHandler sharehomeHandler;
+	private UnshareHomeCommandHandler unsharehomeHandler;
+	private AfkCommandHandler afkHandler;
+	private BusyCommandHandler busyHandler;
 	private DonateCommandHandler donateHandler;
 	
 	public MyPaperPlugin () 
@@ -71,8 +76,13 @@ public class MyPaperPlugin extends JavaPlugin
     	this.deathHandler = new DeathCommandHandler(this.getServer());
     	this.homesHandler = new HomesCommandHandler(this.getServer());
     	this.homeHandler = new HomeCommandHandler(this.getServer());
-    	this.sethomeHandler = new SethomeCommandHandler(this.getServer());
-    	this.unsethomeHandler = new UnsethomeCommandHandler(this.getServer());
+    	this.homeinfoHandler = new HomeInfoCommandHandler(this.getServer());
+    	this.sethomeHandler = new SetHomeCommandHandler(this.getServer());
+    	this.unsethomeHandler = new UnsetHomeCommandHandler(this.getServer());
+    	this.sharehomeHandler = new ShareHomeCommandHandler(this.getServer());
+    	this.unsharehomeHandler = new UnshareHomeCommandHandler(this.getServer());
+    	this.afkHandler = new AfkCommandHandler(this.getServer());
+    	this.busyHandler = new BusyCommandHandler(this.getServer());
     	this.donateHandler = new DonateCommandHandler(this.getServer());
     	
     	this.getServer().getPluginManager().registerEvents(this.pjListener, this);
@@ -89,8 +99,13 @@ public class MyPaperPlugin extends JavaPlugin
     	this.getCommand("death").setExecutor(this.deathHandler);
     	this.getCommand("homes").setExecutor(this.homesHandler);
     	this.getCommand("home").setExecutor(this.homeHandler);
+    	this.getCommand("homeinfo").setExecutor(this.homeinfoHandler);
     	this.getCommand("sethome").setExecutor(this.sethomeHandler);
     	this.getCommand("unsethome").setExecutor(this.unsethomeHandler);
+    	this.getCommand("sharehome").setExecutor(this.sharehomeHandler);
+    	this.getCommand("unsharehome").setExecutor(this.unsharehomeHandler);
+    	this.getCommand("afk").setExecutor(this.afkHandler);
+    	this.getCommand("busy").setExecutor(this.busyHandler);
     	this.getCommand("donate").setExecutor(this.donateHandler);
     	
         this.saveDefaultConfig();

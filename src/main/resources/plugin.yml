@@ -36,11 +36,26 @@ commands:
     description: "Remove existing home"
     usage: "/unsethome <home name>"
   home:
-    description: "Teleport to home"
-    usage: "/home <home name>"
+    description: "Teleport to player's home"
+    usage: "/home <home name> | /home <player name> <home name>"
+  homeinfo:
+    description: "Get info about player's home"
+    usage: "/homeinfo <home name> | /homeinfo <player name> <home name>"
   homes:
     description: "Get list of homes"
     usage: "/homes"
+  sharehome:
+    description: "Make this home available to other players"
+    usage: "/sharehome <home name> <player name | *>"
+  unsharehome:
+    description: "Make this home unavailable to other players"
+    usage: "/unsharehome <home name> <player name | * | **>"
+  busy:
+    description: "Set your busy status or get one of other player"  
+    usage: "/busy [player name]"
+  afk:  
+    description: "Set your AFK status or get one of other player"
+    usage: "/afk [player name]"
   donate:
     description: "Get info about how to donate"
     usage: "/donate"
@@ -75,11 +90,26 @@ permissions:
   unsethome:
     description: "Permission to use /unsethome command"
     default: true
+  sharehome:
+    description: "Permission to use /sharehome command"
+    default: true
+  unsharehome:
+    description: "Permission to use /unsharehome command"
+    default: true
   home:
     description: "Permission to use /home command"
     default: true
+  homeinfo:
+    description: "Permission to use /homeinfo command"
+    default: true
   homes:
     description: "Permission to use /homes command"
+    default: true
+  busy:  
+    description: "Permission to use /busy command"
+    default: true
+  afk:
+    description: "Permission to use /afk command"
     default: true
   donate: 
     description: "Permission to use /donate command"
