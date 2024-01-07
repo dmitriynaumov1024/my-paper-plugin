@@ -10,7 +10,6 @@ import org.naumov.mypaperplugin.enchant.Enchanter;
 
 import net.kyori.adventure.text.*;
 import net.kyori.adventure.text.format.*;
-import de.tr7zw.changeme.nbtapi.*;
 
 
 public class PlayerEntityInteractListener implements Listener
@@ -18,6 +17,7 @@ public class PlayerEntityInteractListener implements Listener
 	final TextColor red = TextColor.color(0xfe3333);
 	final TextColor yellow = TextColor.color(0xfec922);
 	final TextColor green = TextColor.color(0x33fe35);
+	final TextColor cyan = TextColor.color(0x33e0f0);
 	
 	private Server server;
 	
@@ -29,48 +29,57 @@ public class PlayerEntityInteractListener implements Listener
 	@EventHandler
 	public void onPlayerEntityInteract (PlayerInteractEntityEvent event)
 	{
-		Player p = event.getPlayer();
+		Player player = event.getPlayer();
 		
 		if (event.getRightClicked() instanceof ItemFrame itframe) {
-			ItemStack item = itframe.getItem();
-			if (item == null || item.isEmpty()) return;
-			ItemStack hand = p.getInventory().getItemInMainHand();
+			ItemStack source = itframe.getItem();
+			ItemStack target = player.getInventory().getItemInMainHand();
 			
-			NBTItem nitem = new NBTItem(item);
-			NBTCompoundList lst = nitem.getCompoundList(Enchanter.isBook(item) ? "StoredEnchantments" : "Enchantments");
-			Iterable<String> textLines = lst.stream()
-				.map((ench) -> String.format("  + %s %d", ench.getString("id"), ench.getShort("lvl")))
-				.toList();
+			if (source == null || source.isEmpty()) return; 
 			
-			p.sendMessage(Component.join(JoinConfiguration.newlines(), 
-					Component.text("[i] Stored enchantments:").color(TextColor.color(0x00f0ff)), 
-					Component.text(String.join("\n", textLines))));
+			EnchantResult result = Enchanter.handleInteract(source, target, player);
 			
-			EnchantResult enchResult = Enchanter.tryCopyEnchant(item, hand, p);
+			if (result.info) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("Stored enchantments:");
+				for (EnchantResult.Ench ench : result.enchantments) {
+					sb.append(String.format("\n+ %s %d", ench.id, ench.level));
+				}
+				sb.append("\nEnchantment cost: ").append(result.price);
+				player.sendMessage(Component.text(sb.toString()));
+			}
 			
-			switch(enchResult) {
-			case SUCCESS:
-				p.sendMessage(Component.text("[+] Successfully enchanted item in your hand!").color(green));
-				break;
-			case SOURCE_TARGET_MISMATCH:
-				p.sendMessage(Component.text("[x] Target item can not be enchanted with this provider.").color(red));
-				break;
-			case TARGET_ALREADY_ENCHANTED:
-				p.sendMessage(Component.text("[x] Target is already enchanted. Disenchant it and try again.").color(yellow));
-				break;
-			case TARGET_NOT_READY:
-				Enchanter.trySetEnchantReady(hand);
-				p.sendMessage(Component.text("Interact with this item frame again to confirm enchant."));
-				break;
-			case TARGET_NOT_SUPPORTED:
-				p.sendMessage(Component.text("[x] Target is not supported.").color(yellow));
-				break;
-			case TOO_EXPENSIVE:
-				p.sendMessage(Component.text("[x] Too expensive. Get more XP levels and try again.").color(yellow));
-				break;
-			default:
-				p.sendMessage(Component.text("[?] Default switch statement. You should not have seen this! -_-").color(red));
-				break;
+			if (result.ignore) {
+				event.setCancelled(true);
+				return;
+			}
+			
+			if (result.prepared) {
+				player.sendMessage(Component.text("Interact with this item frame again to confirm enchantment.").color(yellow));
+			}
+			
+			if (result.cancelled) {
+				player.sendMessage(Component.text("Enchantment cancelled.").color(yellow));
+			}
+			
+			if (result.confirmed) {
+				player.sendMessage(Component.text("Successfully enchanted item in your hand!").color(green));
+			}
+			
+			if (result.targetEmpty) {
+				player.sendMessage(Component.text("Hold Armor, Tool or Weapon in your main hand to enchant it."));
+			}
+			
+			if (result.targetNotSupported) {
+				player.sendMessage(Component.text("This is not supported. You must hold Armor, Tool or Weapon in your main hand to enchant it.").color(yellow));
+			}
+			
+			if (result.targetTypeMismatch) {
+				player.sendMessage(Component.text("This is not compatible. You can transfer enchantment only from Tool to Tool, from Armor to Armor, from Weapon to Weapon, or from Book to all other categories.").color(yellow));
+			}
+			
+			if (result.tooExpensive) {
+				player.sendMessage(Component.text("Too expensive! Get enough XP levels and try again.").color(yellow));
 			}
 			
 			event.setCancelled(true);

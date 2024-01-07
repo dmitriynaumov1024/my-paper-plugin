@@ -22,7 +22,7 @@ public class KitCommandHandler implements CommandExecutor
 	{
 		this.server = server;
 		this.kits = new HashMap<>();
-		Kit[] tmpKits = new Kit[] { new KitStart(), new KitLevel1(), new KitLevel2() };
+		Kit[] tmpKits = new Kit[] { new KitStart(), new KitLevel1(), new KitLevel2(), new KitArcher() };
 		for (Kit kit : tmpKits) {
 			this.kits.put(kit.getName().toLowerCase(), kit);
 		}

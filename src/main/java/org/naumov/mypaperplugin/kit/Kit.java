@@ -1,12 +1,8 @@
 package org.naumov.mypaperplugin.kit;
 
-import java.util.List;
-
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.metadata.*;
-import org.naumov.mypaperplugin.MyPaperPlugin;
 import org.naumov.mypaperplugin.gamble.Prize;
 
 public abstract class Kit 

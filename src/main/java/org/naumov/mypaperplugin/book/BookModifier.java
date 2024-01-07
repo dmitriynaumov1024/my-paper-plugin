@@ -49,6 +49,9 @@ public class BookModifier
 		}
 		NBTItem nitem = new NBTItem(item);
 		int cost = getEnchantmentCost(nitem.getCompoundList("StoredEnchantments"), BookModifyAction.DUPE);
+		if (cost > owner.getLevel()) {
+			return BookModifyResult.TOO_EXPENSIVE;
+		}
 		item.setAmount(item.getAmount() + 1);
 		owner.setLevel(owner.getLevel() - cost);
 		return BookModifyResult.SUCCESS;

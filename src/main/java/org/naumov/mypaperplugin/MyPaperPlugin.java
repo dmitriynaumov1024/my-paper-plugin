@@ -1,8 +1,5 @@
 package org.naumov.mypaperplugin;
 
-import io.papermc.lib.PaperLib;
-import net.kyori.adventure.text.Component;
-
 import org.bukkit.plugin.java.JavaPlugin;
 import org.naumov.mypaperplugin.comhandler.*;
 import org.naumov.mypaperplugin.evthandler.*;
@@ -10,13 +7,6 @@ import org.naumov.mypaperplugin.evthandler.*;
 import java.lang.Runnable;
 import java.util.List;
 import java.util.ArrayList;
-
-import org.bukkit.Material;
-import org.bukkit.Statistic;
-import org.bukkit.entity.Player;
-import org.bukkit.event.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.*;
 
 /**
  * @author Dmitriy Naumov
