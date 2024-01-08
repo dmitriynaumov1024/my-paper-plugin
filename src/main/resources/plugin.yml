@@ -1,13 +1,10 @@
-main: ${PACKAGE}.${NAME}
-name: ${NAME}
+main: "monolith.plugin.MainPlugin"
+name: "${NAME}"
 version: "${VERSION}"
 api-version: "1.16"
 author: "Dmitriy Naumov"
-description: "All in one, all in one..."
+description: "The most solid monolith plugin to ever exist"
 commands:
-  stats:
-    description: "View own stats"
-    usage: "/stats"
   book:
     description: "Various manipulations with enchanted books"
     usage: "/book <dupe|upgrade>"
@@ -28,6 +25,7 @@ commands:
     usage: "/back"
   death:
     description: "Go to last death location"
+    aliases: [ "deathback" ]
     usage: "/death"
   sethome:
     description: "Create new home"
@@ -50,6 +48,10 @@ commands:
   unsharehome:
     description: "Make this home unavailable to other players"
     usage: "/unsharehome <home name> <player name | * | **>"
+  stats:
+    description: "View own stats"
+    aliases: [ "statistics" ]
+    usage: "/stats"
   busy:
     description: "Set your busy status or get one of other player"  
     usage: "/busy [player name]"
@@ -60,9 +62,6 @@ commands:
     description: "Get info about how to donate"
     usage: "/donate"
 permissions:
-  stats:
-    description: "Permission to use /stats command"
-    default: true
   book:
     description: "Permission to use /book command"
     default: true
@@ -110,6 +109,9 @@ permissions:
     default: true
   afk:
     description: "Permission to use /afk command"
+    default: true
+  stats:
+    description: "Permission to use /stats command"
     default: true
   donate: 
     description: "Permission to use /donate command"

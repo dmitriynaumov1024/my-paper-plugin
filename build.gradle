@@ -6,7 +6,7 @@ plugins {
     id 'java'
 }
 
-group = "org.naumov.mypaperplugin"
+group = "monolith"
 
 static def getTime() {
     SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd-HHmm")
