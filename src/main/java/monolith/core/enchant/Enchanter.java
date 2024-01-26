@@ -166,7 +166,7 @@ public class Enchanter
 			String id = skv.getString("id");
 			int slevel = skv.getInteger("lvl");
 			int tlevel = 0;
-			for (ReadWriteNBT tkv : targetEnch) {
+			if (targetEnch != null) for (ReadWriteNBT tkv : targetEnch) {
 				if (tkv.getString("id").equals(id)) {
 					tlevel = tkv.getInteger("lvl");
 				}
@@ -238,7 +238,7 @@ public class Enchanter
 	
 	static boolean isArmorId (String id)
 	{
-		return id.endsWith("_chestplate") || id.endsWith("_leggings") || id.endsWith("_boots") || id.endsWith("_helmet") || id.endsWith("shield");
+		return id.endsWith("_chestplate") || id.endsWith("_leggings") || id.endsWith("_boots") || id.endsWith("_helmet") || id.endsWith("shield") || id.endsWith("elytra");
 	}
 	
 	static boolean isEqualCategoryId (String id1, String id2)
